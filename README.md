@@ -1,85 +1,57 @@
-# Script para Contagem de E-mails e Extração de Domínios
+# Script de Monitoramento de E-mails para Domínios com API WHMCS
 
-Este script permite visualizar informações sobre a caixa de entrada de uma conta do Gmail, incluindo o número total de mensagens e o domínio extraído do remetente de cada e-mail.
+Este script PHP foi desenvolvido para monitorar a caixa de entrada de um e-mail específico (via IMAP), buscar mensagens relacionadas a domínios registrados, extrair informações dos e-mails e, com base nos dados do domínio, consultar a API do WHMCS para verificar se o domínio está associado a um cliente. Caso o domínio não esteja registrado, o script irá exibir informações relevantes ou realizar ações específicas conforme as regras definidas.
 
 ## Funcionalidades
+- Conecta-se ao servidor de e-mail via IMAP.
+- Verifica os e-mails não lidos com assuntos específicos, relacionados a domínios registrados.
+- Extrai informações do assunto e corpo do e-mail.
+- Verifica o estado do domínio registrado por meio da API WHMCS.
+- Realiza ações com base nos dados do domínio e estado da conta do cliente no WHMCS.
+- Exibe informações detalhadas sobre os domínios processados.
 
-- Conta o total de mensagens na caixa de entrada do Gmail.
-- Exibe o assunto de cada e-mail presente na caixa de entrada.
-- Extrai o domínio do remetente de cada e-mail (ex: gmail.com, yahoo.com).
-- Exibe essas informações de forma clara e organizada em uma interface web.
-
-## Exemplo de Saída
-
-O script exibe as seguintes informações no navegador:
-
-- **Total de Mensagens na Caixa de Entrada:** X
-- **Assunto:** [Assunto do e-mail]
-- **Domínio:** [Domínio extraído do e-mail]
-
-Essas informações são exibidas de forma clara e organizada para o usuário, permitindo uma visão rápida e intuitiva do estado da caixa de entrada e dos e-mails presentes.
-
-## Como Funciona
-
-- **Conexão com o Gmail:** O script usa a API do Gmail para se conectar à conta de e-mail do usuário. É necessário que o usuário tenha autenticado a aplicação com a permissão adequada para acessar a caixa de entrada do Gmail.
-  
-- **Contagem de Mensagens:** O número total de mensagens na caixa de entrada é obtido através da consulta `users.messages.list`, que retorna a quantidade de mensagens no Gmail.
-
-- **Extração de Dados dos E-mails:** A partir da lista de mensagens, o script recupera o assunto de cada e-mail e extrai o domínio do remetente, utilizando expressões regulares para isolar o domínio a partir do endereço de e-mail do remetente.
-
-- **Exibição no Navegador:** A informação é formatada e exibida no navegador utilizando HTML. Isso inclui a contagem total de mensagens, o assunto dos e-mails e o domínio extraído de cada remetente.
-
-## Tecnologias Utilizadas
-
-- **Node.js:** Para execução do script e manipulação de arquivos JSON.
-- **Google API Client:** Para interação com a API do Gmail.
-- **Express:** Para servir a interface web onde os dados são exibidos.
-- **JavaScript:** Para lógica do backend e manipulação de dados.
-- **HTML/CSS:** Para a interface de exibição no navegador.
+## Requisitos
+- Servidor com PHP instalado.
+- Extensão IMAP habilitada no PHP.
+- Conta de e-mail configurada para acesso IMAP.
+- Acesso à API do WHMCS (URL, nome de usuário e senha para autenticação).
+- Certifique-se de ter as credenciais e configurações da API do WHMCS corretamente configuradas.
 
 ## Configuração
+1. Configuração de e-mail (IMAP)
+- Substitua as variáveis $login e $senha com suas credenciais de e-mail para conexão IMAP.
+- Verifique a conexão IMAP, especialmente a URL do servidor, como por exemplo imap.gmail.com:993/imap/ssl/novalidate-cert para contas do Gmail.
 
-### Passo 1: Obter credenciais da API do Gmail
+2. Configuração da API WHMCS
+- Substitua as variáveis $url, $username, e $password com as credenciais da API WHMCS:
+- - $url: URL do arquivo da API do WHMCS.
+- - $username: Nome de usuário de administração.
+- - $password: Senha de administração.
 
-1. Acesse o [Console de Desenvolvedor do Google](https://console.developers.google.com/).
-2. Crie um novo projeto.
-3. Habilite a API do Gmail.
-4. Crie uma credencial do tipo **OAuth 2.0 Client ID**.
-5. Baixe o arquivo `credentials.json` e coloque na raiz do seu projeto.
+3. Assuntos de E-mail
+- O script verifica e-mails com assuntos relacionados a domínios, como:
+- - "Extensão de prazo de pagamento"
+- - "Fatura de registro"
+- - "Aviso de descongelamento"
+- - Outros associados a registros de domínios no Registro.br.
 
-### Passo 2: Instalar Dependências
+## Como Usar
+1. Configure as credenciais de e-mail e a API do WHMCS conforme descrito na seção de configuração.
+2. Execute o script em seu servidor PHP.
+3. O script irá:
+- Conectar-se à caixa de entrada de e-mail.
+- Buscar e-mails não lidos com assuntos específicos.
+- Processar as informações de cada e-mail, como o domínio registrado.
+- Consultar a API do WHMCS para verificar o status do domínio e exibir os resultados.
+4. A resposta da API WHMCS será analisada para determinar se o domínio está associado a um cliente e exibir as informações relevantes.
 
-Execute o seguinte comando para instalar as dependências do projeto:
+## Exemplo de Saída
+- Assunto: Extensão de prazo de pagamento
+- Domínio: example.com
+- ID do Cliente: 12345
+- Status do Domínio: Pendente de pagamento
 
-```bash
-npm install
-```
-
-### Passo 3: Autenticação e Execução
-
-1. Execute o script para autenticar a aplicação:
-
-```bash
-node authenticate.js
-```
-
-2. Após autenticação, execute o servidor para visualizar a saída no navegador:
-
-```bash
-node app.js
-```
-
-3. Acesse a interface web no seu navegador em http://localhost:3000.
-
-## Contribuindo
-
-Se você deseja contribuir com melhorias para este projeto, siga os passos abaixo:
-
-1. Faça o fork deste repositório.
-2. Crie uma branch para a sua feature (git checkout -b feature/MinhaFeature).
-3. Faça as alterações necessárias e comite-as (git commit -am 'Adiciona nova feature').
-4. Faça o push para a sua branch (git push origin feature/MinhaFeature).
-5. Abra um Pull Request explicando as alterações realizadas.
-
-## Licença
-Este projeto está licenciado sob a MIT License - veja o arquivo LICENSE para mais detalhes.
+## Observações
+- Segurança: Certifique-se de proteger as credenciais da API e do e-mail.
+- Erros de Conexão: Caso o script não consiga se conectar ao servidor de e-mail ou à API, ele exibirá mensagens de erro. Certifique-se de que as configurações de rede e os serviços necessários estão funcionando corretamente.
+- Depuração: O script pode ser modificado para adicionar registros de depuração ou mais informações conforme necessário.
