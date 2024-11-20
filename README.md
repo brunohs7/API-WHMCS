@@ -1,4 +1,4 @@
-# Script de Monitoramento de E-mails para Domínios com API WHMCS
+# Filtro de E-mails para Atendimento - WHMCS API
 
 Este script PHP foi desenvolvido para monitorar a caixa de entrada de um e-mail específico (via IMAP), buscar mensagens relacionadas a domínios registrados, extrair informações dos e-mails e, com base nos dados do domínio, consultar a API do WHMCS para verificar se o domínio está associado a um cliente. Caso o domínio não esteja registrado, o script irá exibir informações relevantes ou realizar ações específicas conforme as regras definidas.
 
