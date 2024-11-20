@@ -21,28 +21,26 @@ Este script PHP foi desenvolvido para monitorar a caixa de entrada de um e-mail 
 1. Configuração de e-mail (IMAP)
 - Substitua as variáveis $login e $senha com suas credenciais de e-mail para conexão IMAP.
 - Verifique a conexão IMAP, especialmente a URL do servidor, como por exemplo imap.gmail.com:993/imap/ssl/novalidate-cert para contas do Gmail.
-
 2. Configuração da API WHMCS
 - Substitua as variáveis $url, $username, e $password com as credenciais da API WHMCS:
-- - $url: URL do arquivo da API do WHMCS.
-- - $username: Nome de usuário de administração.
-- - $password: Senha de administração.
-
+	- $url: URL do arquivo da API do WHMCS.
+	- $username: Nome de usuário de administração.
+	- $password: Senha de administração.
 3. Assuntos de E-mail
 - O script verifica e-mails com assuntos relacionados a domínios, como:
-- - "Extensão de prazo de pagamento"
-- - "Fatura de registro"
-- - "Aviso de descongelamento"
-- - Outros associados a registros de domínios no Registro.br.
+	- "Extensão de prazo de pagamento"
+	- "Fatura de registro"
+	- "Aviso de descongelamento"
+	- Outros associados a registros de domínios no Registro.br.
 
 ## Como Usar
 1. Configure as credenciais de e-mail e a API do WHMCS conforme descrito na seção de configuração.
 2. Execute o script em seu servidor PHP.
 3. O script irá:
-- Conectar-se à caixa de entrada de e-mail.
-- Buscar e-mails não lidos com assuntos específicos.
-- Processar as informações de cada e-mail, como o domínio registrado.
-- Consultar a API do WHMCS para verificar o status do domínio e exibir os resultados.
+	- Conectar-se à caixa de entrada de e-mail.
+	- Buscar e-mails não lidos com assuntos específicos.
+	- Processar as informações de cada e-mail, como o domínio registrado.
+	- Consultar a API do WHMCS para verificar o status do domínio e exibir os resultados.
 4. A resposta da API WHMCS será analisada para determinar se o domínio está associado a um cliente e exibir as informações relevantes.
 
 ## Exemplo de Saída
